@@ -1,4 +1,5 @@
 import { Layout, Menu } from "antd";
+import { Link } from "react-router-dom";
 import { IMenu } from "../../dto/menu/menu.dto";
 import "./home.css";
 
@@ -13,7 +14,7 @@ const Home: React.FC<Props> = () => {
       label: "Cadastros",
       submenus: [
         { key: "doctors", label: "Médicos" },
-        { key: "pacients", label: "Pacientes" },
+        { key: "pacients", label: "Pacientes", path: "/pacient" },
         {
           key: "items",
           label: "Itens",
@@ -60,7 +61,7 @@ const Home: React.FC<Props> = () => {
 
   const buildSubMenu = (submenuList: IMenu[]) => {
     return submenuList.map((submenuItem) => {
-      const { key, label, submenus } = submenuItem;
+      const { key, label, submenus, path } = submenuItem;
       if (submenus) {
         return (
           <Menu.SubMenu key={key} title={label}>
@@ -68,7 +69,11 @@ const Home: React.FC<Props> = () => {
           </Menu.SubMenu>
         );
       } else {
-        return <Menu.Item key={key}>{label}</Menu.Item>;
+        return (
+          <Menu.Item key={key}>
+            {path ? <Link to={path}>{label}</Link> : label}
+          </Menu.Item>
+        );
       }
     });
   };
