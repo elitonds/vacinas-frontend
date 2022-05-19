@@ -1,10 +1,17 @@
-import { Button, DatePicker, Form, Input } from "antd";
+import { Button, DatePicker, Divider, Form, Input, Select } from "antd";
+import { MaskedInput } from "antd-mask-input";
+import { useState } from "react";
 import Card from "../../components/card/card";
+import { Gender } from "../../dto/menu/gender/gender";
+import cpfMask from "../../utils/cpfMask";
 
 interface Props {}
 
 const Pacient: React.FC<Props> = () => {
   const { Item } = Form;
+  const { Option } = Select;
+
+  const [cpf, setCpf] = useState("");
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
@@ -12,6 +19,7 @@ const Pacient: React.FC<Props> = () => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+    console.log();
   };
 
   const configBirthDate = {
@@ -19,7 +27,7 @@ const Pacient: React.FC<Props> = () => {
       {
         type: "object" as const,
         required: true,
-        message: "Data de nascimento é obrigatória",
+        message: "O campo data de nascimento é obrigatório",
       },
     ],
   };
@@ -33,22 +41,69 @@ const Pacient: React.FC<Props> = () => {
           onFinishFailed={onFinishFailed}
           className="d-flex row"
         >
+          <Divider orientation="left">Dados pessoais</Divider>
           <Item
             name="pacient-name"
-            label="Nome"
             className="col-md-6"
-            rules={[{ required: true, message: "Nome é obrigatório" }]}
+            rules={[{ required: true, message: "O campo nome é obrigatório" }]}
           >
-            <Input />
+            <Input id="name" placeholder="Nome" maxLength={200} />
           </Item>
-          <Item className="col-md-6" name="birth-date" label="Data de nascimento" {...configBirthDate}>
-            <DatePicker className="w-100"/>
+          <Item className="col-md-6" name="birthdate" {...configBirthDate}>
+            <DatePicker
+              id="birthdate"
+              className="w-100"
+              placeholder="Data de nascimento"
+            />
           </Item>
-          <Item>
+          <Item
+            className="col-md-6"
+            name="gender"
+            rules={[{ required: true, message: "O campo sexo é obrigatório" }]}
+          >
+            <Select id="gender" showSearch placeholder="Sexo">
+              {Object.entries(Gender).map((gender) => {
+                return (
+                  <Option key={gender[0]} value={gender[0]}>
+                    {gender[1]}
+                  </Option>
+                );
+              })}
+            </Select>
+          </Item>
+          <Item
+            className="col-md-6"
+            name="document"
+            rules={[
+              { pattern: /\d{3}\.\d{3}\.\d{3}-\d{2}/, message: "CPF inválido" },
+            ]}
+          >
+            <MaskedInput
+              mask="000.000.000-00"
+              id="document"
+              placeholder="CPF"
+            />
+          </Item>
+          <Item
+            name="mother-name"
+            className="col-md-6"
+            rules={[{ required: true, message: "O campo mãe é obrigatório" }]}
+          >
+            <Input id="mother-name" placeholder="Mãe" maxLength={200} />
+          </Item>
+          <Item name="father-name" className="col-md-6">
+            <Input id="father-name" placeholder="Pai" maxLength={200} />
+          </Item>
+          <Divider orientation="left">Contato</Divider>
+          
+          <Item name="email" className="col-md-6">
+            <Input id="email" placeholder="E-mail" maxLength={150} />
+          </Item>
+          <Item className="col-md-12" style={{ textAlign: "right" }}>
             <Button type="primary" htmlType="submit">
-              Submit
+              Cadastrar
             </Button>
-          </Item>
+          </Item>          
         </Form>
       </Card>
     </>
