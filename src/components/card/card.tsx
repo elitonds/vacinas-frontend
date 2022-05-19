@@ -3,7 +3,7 @@ import { StyledCard } from "./card.style";
 interface Props {
   children: any;
   title: string;
-  className: string;
+  className?: string;
 }
 
 const Card: React.FC<Props> = (props) => {
