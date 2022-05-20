@@ -38,7 +38,8 @@ const Home: React.FC<Props> = () => {
               ],
             },
           ],
-        },
+        },        
+        { key: "applicator", label: "Aplicadores", path: "/applicator" },
       ],
     },
     {

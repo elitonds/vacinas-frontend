@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Pacient from "./pages/pacient/pacient";
-import Company from "./pages/company/company";
+import Applicator from "./pages/applicator/applicator";
 import Home from "./pages/home/home";
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
         <Home />
         <Routes>
           <Route key="pacient-route" path="/pacient" element={<Pacient />} />
-          <Route key="company-route" path="/company" element={<Company />} />
+          <Route key="applicator-route" path="/applicator" element={<Applicator />} />
         </Routes>
       </Router>
     </div>
