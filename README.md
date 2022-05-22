@@ -9,11 +9,11 @@ criado com [ReactJS](https://pt-br.reactjs.org/), [Bootstrap](https://getbootstr
 
 Instala as dependências do projeto
 
-### `npm start`
+### `npm start` ou `yarn start`
 
 Inicia o projeto em modo de desenvolvimento.\
 Por padrão a aplicação roda no endereço [http://localhost:3000](http://localhost:3000).
 
-### `npm test`
+### `npm test` ou `yarn test`
 
 Roda os testes
