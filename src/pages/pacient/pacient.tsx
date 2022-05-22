@@ -1,17 +1,9 @@
-import {
-  Button,
-  Checkbox,
-  DatePicker,
-  Divider,
-  Form,
-  Input,
-  Select,
-} from "antd";
-import { MaskedInput } from "antd-mask-input";
+import { Button, Checkbox, Divider, Form, Input, Select } from "antd";
 import Card from "../../components/card/card";
 import DateField from "../../components/date-field/date-field";
-import { Gender } from "../../dto/menu/gender/gender";
-import cpfMask from "../../utils/cpfMask";
+import { Gender } from "../../dto/gender/gender";
+import { cellphoneMask, cepMask, cpfMask } from "../../utils/masks";
+import { cepPattern, cpfPattern, phonePattern } from "../../utils/patterns";
 
 interface Props {}
 
@@ -56,7 +48,7 @@ const Pacient: React.FC<Props> = () => {
             className="col-md-6"
             rules={[{ required: true, message: "O campo nome é obrigatório" }]}
           >
-            <Input id="name" placeholder="Nome" maxLength={200} />
+            <Input id="name" placeholder="Nome" maxLength={200} allowClear />
           </Item>
           <Item className="col-md-6" name="birthdate" {...configBirthDate}>
             <DateField
@@ -70,7 +62,7 @@ const Pacient: React.FC<Props> = () => {
             name="gender"
             rules={[{ required: true, message: "O campo sexo é obrigatório" }]}
           >
-            <Select id="gender" showSearch placeholder="Sexo">
+            <Select id="gender" showSearch placeholder="Sexo" allowClear>
               {Object.entries(Gender).map((gender) => {
                 return (
                   <Option key={gender[0]} value={gender[0]}>
@@ -83,15 +75,21 @@ const Pacient: React.FC<Props> = () => {
           <Item
             className="col-md-6"
             name="document"
+            normalize={(value) => {
+              return cpfMask(value);
+            }}
             rules={[
-              { pattern: /\d{3}\.\d{3}\.\d{3}-\d{2}/, message: "CPF inválido", transform: function(value){
-                return cpfMask(value);
-              }},
+              {
+                pattern: cpfPattern,
+                message: "CPF inválido",
+              },
             ]}
           >
             <Input
               id="document"
               placeholder="CPF"
+              onChange={(e) => console.log(form)}
+              allowClear
             />
           </Item>
           <Item
@@ -99,22 +97,66 @@ const Pacient: React.FC<Props> = () => {
             className="col-md-6"
             rules={[{ required: true, message: "O campo mãe é obrigatório" }]}
           >
-            <Input id="mother-name" placeholder="Mãe" maxLength={200} />
+            <Input
+              id="mother-name"
+              placeholder="Mãe"
+              maxLength={200}
+              allowClear
+            />
           </Item>
           <Item name="father-name" className="col-md-6">
-            <Input id="father-name" placeholder="Pai" maxLength={200} />
+            <Input
+              id="father-name"
+              placeholder="Pai"
+              maxLength={200}
+              allowClear
+            />
           </Item>
 
           <Divider orientation="left">Contato</Divider>
 
           <Item name="email" className="col-md-6">
-            <Input id="email" placeholder="E-mail" maxLength={150} />
+            <Input id="email" placeholder="E-mail" type="email" maxLength={150} allowClear />
           </Item>
-          <Item name="landline" className="col-md-6">
-            <Input id="landline" placeholder="Telefone fixo" />
+          <Item
+            name="landline"
+            className="col-md-6"
+            rules={[
+              {
+                pattern: phonePattern,
+                message: "Celular inválido",
+              },
+            ]}
+            normalize={(value) => {
+              return cellphoneMask(value);
+            }}
+          >
+            <Input
+              id="landline"
+              placeholder="Telefone fixo"
+              allowClear
+              maxLength={14}
+            />
           </Item>
-          <Item name="cellphone" className="col-md-6">
-            <Input id="cellphone" placeholder="Celular" />
+          <Item
+            name="cellphone"
+            className="col-md-6"
+            rules={[
+              {
+                pattern: phonePattern,
+                message: "Celular inválido",
+              },
+            ]}
+            normalize={(value) => {
+              return cellphoneMask(value);
+            }}
+          >
+            <Input
+              id="cellphone"
+              placeholder="Celular"
+              maxLength={15}
+              allowClear
+            />
           </Item>
           <Item name="check-whatsapp" className="col-md-6">
             <Checkbox id="check-whatsapp">Receber Whatsapp</Checkbox>
@@ -125,24 +167,27 @@ const Pacient: React.FC<Props> = () => {
           <Item
             className="col-md-2"
             name="postal-code"
-            rules={[{ pattern: /\d{5}-\d{3}/, message: "CEP inválido" }]}
+            rules={[{ pattern: cepPattern, message: "CEP inválido" }]}
+            normalize={(value) => {
+              return cepMask(value);
+            }}
           >
-            <MaskedInput mask="00000-000" id="postal-code" placeholder="CEP" />
+            <Input id="postal-code" placeholder="CEP" allowClear />
           </Item>
           <Item name="adress" className="col-md-8">
-            <Input id="adress" placeholder="Endereço" />
+            <Input id="adress" placeholder="Endereço" allowClear />
           </Item>
           <Item className="col-md-2" name="number">
-            <Input id="number" placeholder="Nº" />
+            <Input id="number" placeholder="Nº" allowClear />
           </Item>
           <Item name="district" className="col-md-4">
-            <Input id="district" placeholder="Bairro" />
+            <Input id="district" placeholder="Bairro" allowClear />
           </Item>
           <Item name="city" className="col-md-4">
-            <Input id="city" placeholder="Cidade" />
+            <Input id="city" placeholder="Cidade" allowClear />
           </Item>
           <Item name="state" className="col-md-4">
-            <Select id="state" showSearch placeholder="UF" />
+            <Select id="state" showSearch placeholder="UF" allowClear />
           </Item>
 
           <Divider orientation="left">Sobre a saúde do paciente</Divider>
@@ -158,6 +203,7 @@ const Pacient: React.FC<Props> = () => {
               rows={3}
               id="any-disease-related"
               placeholder="Possui alguma doença relacionada ao sistema imune?"
+              allowClear
             />
           </Item>
           <Item
@@ -168,6 +214,7 @@ const Pacient: React.FC<Props> = () => {
               rows={3}
               id="any-alergical-reaction-vaccine"
               placeholder="Já teve alguma reação alérgica a alguma vacina? Qual?"
+              allowClear
             />
           </Item>
           <Item
@@ -178,6 +225,7 @@ const Pacient: React.FC<Props> = () => {
               rows={3}
               id="any-recent-vaccination"
               placeholder="Realizou alguma vacinação nos últimos 30 dias? Qual?"
+              allowClear
             />
           </Item>
 
