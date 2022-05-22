@@ -3,7 +3,7 @@
 Sistema destinado a área de saúde com foco no gerenciamento de aplicações de vacinas
 criado com [ReactJS](https://pt-br.reactjs.org/), [Bootstrap](https://getbootstrap.com/) e [AntDesign](https://ant.design/)
 
-## Comandos para iniciar e fazer rodar os testes do projeto
+## Comandos para iniciar e rodar os testes do projeto
 
 ### `npm install` ou `yarn`
 
